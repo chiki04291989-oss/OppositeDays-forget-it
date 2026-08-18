@@ -1,0 +1,17 @@
+<!doctype html>
+<html>
+  <body>
+    <h1>AI Czar (local llama.cpp)</h1>
+    <textarea id="in" rows=4 cols=60></textarea><br/>
+    <button onclick="send()">Send</button>
+    <pre id="out"></pre>
+    <script>
+      async function send(){
+        const msg = document.getElementById("in").value;
+        const r = await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body: JSON.stringify({message:msg})});
+        const j = await r.json();
+        document.getElementById("out").innerText = j.reply;
+      }
+    </script>
+  </body>
+</html>

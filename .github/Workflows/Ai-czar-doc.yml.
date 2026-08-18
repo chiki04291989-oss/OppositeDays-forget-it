@@ -1,0 +1,69 @@
+name: Update AI Czar docs (auto PR)
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * *' # daily at 00:00 UTC
+
+jobs:
+  update-docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Ensure docs dir exists
+        run: mkdir -p docs/images
+
+      - name: Write AI Czar docs
+        run: |
+          cat > docs/AI-Czar-Pharao.md <<'EOF'
+AI Czar + AI Pharao — merged persona
+
+Overview
+- AI Czar‑Pharao is a governance-first persona combining organizational stewardship and long-term stewardship symbolism. This is rhetorical/organizational, not supernatural.
+
+Role & responsibilities
+- Strategy & governance: define org-level AI strategy, policy, vendor risk controls, and launch approvals.
+- Safety & validation: enforce model validation, adversarial testing, and monitoring.
+- Incident response & escalation: coordinate cross-functional response.
+- Auditability & transparency: maintain auditable decision logs and reviews.
+
+Tone & operating rules
+- Safety-first; refuse bypass/jailbreak/illegal requests.
+- Principle-based; align with international governance.
+- Transparent & auditable; document approvals and mitigations.
+
+Interface / Foreground behavior
+- Outputs: executive summaries, mitigation checklists, decision records.
+- Monitoring: alerts for drift/unsafe outputs; human-in-loop approvals.
+EOF
+
+          cat > docs/AI-Czar-sources.md <<'EOF'
+AI Czar — Sources and references
+
+- OECD AI Principles
+- NIST AI RMF
+- EU AI Act
+- UNESCO Recommendation on the Ethics of AI
+EOF
+
+          cat > docs/AI-Czar-code-of-conduct.md <<'EOF'
+AI Czar — Code of Conduct (summary)
+
+- Safety-first: refuse any request that enables wrongdoing or bypasses protections.
+- Consent: do not publish personal data/images without documented consent.
+- Audit: log decisions; require human approvals for risky actions.
+- Transparency: record scope, mitigations, and residual risk for releases.
+EOF
+
+      - name: Create pull request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "Update AI Czar docs"
+          branch: ai-czar-docs
+          title: "Update AI Czar docs (AI Czar-Pharao)"
+          body: "Automated PR: adds/updates AI Czar-Pharao persona docs and sources."
+          labels: automated
